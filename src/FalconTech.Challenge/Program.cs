@@ -1,3 +1,6 @@
+using FalconTech.Challenge.DataLayer;
+using Microsoft.EntityFrameworkCore;
+
 namespace FalconTech.Challenge
 {
     public class Program
@@ -5,6 +8,11 @@ namespace FalconTech.Challenge
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
+
+            string connectionString = builder.Configuration.GetConnectionString("FalconTech")
+                ?? throw new InvalidOperationException("Expected defined Connection string 'FalcoNTech', but it was not found.");
+
+            builder.Services.AddDbContext<AppDbContext>(options => options.UseSqlServer(connectionString));
 
             // Add services to the container.
             builder.Services.AddRazorPages();
